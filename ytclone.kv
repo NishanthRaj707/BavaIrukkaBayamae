@@ -1,0 +1,327 @@
+#:kivy 2.1.0
+
+
+<PremiumButton@Button>:
+    background_color: 0, 0, 0, 0  # Hide the default Kivy grey image
+    color: 1, 1, 1, 1             # White text
+    font_size: '20sp'
+    bold: True
+    size_hint: None, None
+    size: "240dp", "60dp"         # Fixed size for a premium look
+    
+    canvas.before:
+        # The Outer Border
+        Color:
+            rgba: 1, 0, 0, 1      # Bava Red
+        Line:
+            width: 2
+            rectangle: (self.x, self.y, self.width, self.height)
+        
+        # The Background Fill (Slightly lighter than pure black)
+        Color:
+            rgba: 0.1, 0.1, 0.1, 1
+        Rectangle:
+            pos: self.pos
+            size: self.size
+    
+    # Visual feedback when pressed
+    on_press: 
+        self.canvas.before.children[0].rgba = (1, 1, 1, 1) # Border turns White
+    on_release: 
+        self.canvas.before.children[0].rgba = (1, 0, 0, 1) # Border turns Red back
+
+<Intro>:
+    # Premium Dark Background
+    canvas.before:
+        Color:
+            rgba: 0, 0, 0, 1
+        Rectangle:
+            pos: self.pos
+            size: self.size
+
+    # Anchor everything to the center of the screen
+    RelativeLayout:
+        
+        # Central Branding Group
+        BoxLayout:
+            orientation: 'vertical'
+            size_hint: (1, None)
+            height: self.minimum_height
+            pos_hint: {'center_x': 0.5, 'center_y': 0.55}
+            spacing: "10dp"
+
+            Label:
+                text: "Bava  Erukka  Bayamae"
+                font_size: '48sp'
+                font_name: "myfont"
+                bold: True
+                color: 1, 0, 0, 1  # Bold Red
+                halign: 'center'
+                valign: 'middle'
+                size_hint_y: None
+                height: self.texture_size[1]
+
+            Label:
+                text: "Why fear when bava here !"
+                font_size: '16sp'
+                bold: True
+                color: 1, 1, 1, 1  # White
+                halign: 'center'
+                size_hint_y: None
+                height: self.texture_size[1]
+                letter_spacing: 3
+
+        # Action Button at the bottom
+        PremiumButton:
+            text: "CONTINUE"
+            pos_hint: {'center_x': 0.5, 'y': 0.15}
+            on_release: root.switch_page()
+
+<Home>:
+    orientation: 'vertical'
+    canvas.before:
+        Color:
+            rgba: 0, 0, 0, 1  # Solid Black
+        Rectangle:
+            pos: self.pos
+            size: self.size
+
+    RelativeLayout:
+        # 1. The Creative Greeting Label
+        Label:
+            text: "Ask Bava Anything..."
+            font_size: '24sp'
+            bold: True
+            color: 1, 1, 1, 1  # Pure White
+            pos_hint: {'center_x': 0.5, 'center_y': 0.62}
+
+        # 2. The Modern Search Container (Rounded Box)
+        BoxLayout:
+            size_hint: (0.85, None)
+            height: "55dp"
+            pos_hint: {'center_x': 0.5, 'center_y': 0.52}
+            padding: ["15dp", "2dp", "5dp", "2dp"]
+            spacing: "10dp"
+            
+            canvas.before:
+                Color:
+                    rgba: 0.15, 0.15, 0.15, 1  # Dark Graphite Fill
+                RoundedRectangle:
+                    pos: self.pos
+                    size: self.size
+                    radius: [25, ]  # Makes it a "Pill" shape
+                Color:
+                    rgba: 1, 0, 0, 1  # Thin Red Border
+                Line:
+                    width: 1.1
+                    rounded_rectangle: (self.x, self.y, self.width, self.height, 25)
+
+            # Symbol Icon (User Friendly)
+            Label:
+                text: "🔍"  # Magnifying glass symbol
+                size_hint_x: None
+                width: "30dp"
+                font_size: '20sp'
+
+            # The Actual Input Field
+            TextInput:
+                id: search_input
+                hint_text: "Search for a video..."
+                hint_text_color: 0.5, 0.5, 0.5, 1
+                background_color: 0, 0, 0, 0  # Transparent background
+                foreground_color: 1, 1, 1, 1   # White text
+                cursor_color: 1, 0, 0, 1       # Red cursor
+                multiline: False
+                padding_y: [self.height / 2.0 - (self.line_height / 2.0), 0]
+                font_size: '18sp'
+
+            # 3. Compact Modern Search Button
+            Button:
+                text: "GO"
+                size_hint: (None, None)
+                size: "60dp", "45dp"
+                pos_hint: {'center_y': 0.5}
+                background_color: 0, 0, 0, 0
+                bold: True
+                color: 1, 1, 1, 1
+                on_release: root.start_search(search_input.text)
+                
+                canvas.before:
+                    Color:
+                        rgba: 1, 0, 0, 1  # Solid Bava Red
+                    RoundedRectangle:
+                        pos: self.pos
+                        size: self.size
+                        radius: [20, ]
+
+<Menu>:
+    name: 'results'
+    BoxLayout:
+        orientation: 'vertical'
+        canvas.before:
+            Color:
+                rgba: 0, 0, 0, 1
+            Rectangle:
+                pos: self.pos
+                size: self.size
+
+        # Premium Top Bar
+        BoxLayout:
+            size_hint_y: None
+            height: "60dp"
+            padding: "10dp"
+            canvas.before:
+                Color:
+                    rgba: 0.1, 0.1, 0.1, 1
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+            
+            Button:
+                text: "←"
+                size_hint_x: None
+                width: "50dp"
+                background_color: 0,0,0,0
+                font_size: '24sp'
+                bold: True
+                on_release: app.root.current = 'home'
+            
+            Label:
+                text: "BAVA FEED"
+                bold: True
+                font_size: '20sp'
+                halign: 'left'
+
+        ScrollView:
+            GridLayout:
+                id: results_list
+                cols: 1
+                size_hint_y: None
+                height: self.minimum_height
+                spacing: "20dp"
+                padding: "15dp"
+
+# The Individual Video Card Template
+<MenuCard>:
+    orientation: 'vertical'
+    size_hint_y: None
+    height: "280dp"
+    spacing: "8dp"
+    
+    canvas.before:
+        Color:
+            rgba: 0.1, 0.1, 0.1, 1
+        RoundedRectangle:
+            pos: self.pos
+            size: self.size
+            radius: [15,]
+
+    # Thumbnail Area
+    RelativeLayout:
+        size_hint_y: 0.7
+
+        AsyncImage:
+            source: root.thumbnail
+            allow_stretch: True
+            keep_ratio: False
+            fit_mode:"cover"
+        
+        Label:
+            text: root.duration
+            size_hint: None, None
+            size: self.texture_size[0] + 16, "24dp"
+            pos_hint: {'right': 0.98, 'y': 0.05}
+            font_size: '12sp'
+            canvas.before:
+                Color:
+                    rgba: 0, 0, 0, 0.7
+                RoundedRectangle:
+                    pos: self.pos
+                    size: self.size
+                    radius: [5,]
+
+    # Title and Button Area
+    BoxLayout:
+        size_hint_y: 0.3
+        padding: ["12dp", "5dp", "12dp", "5dp"]
+        orientation: 'horizontal'
+        spacing: "10dp"
+
+        Label:
+            text: root.title
+            color: 1, 1, 1, 1
+            bold: True
+            font_size: '14sp'        # Increased for visibility
+            size_hint_x: 0.8
+            # Force the text box to match the label's actual width and height
+            text_size: self.width, self.height 
+            halign: 'left'
+            valign: 'middle'
+            # Removed shorten for now to verify text existence
+
+        AnchorLayout:
+            size_hint_x: 0.2
+            anchor_x: 'center'
+            anchor_y: 'center'
+            
+            Button:
+                text: "⬇"
+                size_hint: None, None
+                size: "45dp", "45dp"
+                background_color: 0, 0, 0, 0
+                on_release: root.download_video()
+                canvas.before:
+                    Color:
+                        rgba: 1, 0, 0, 1  # Bava Red
+                    RoundedRectangle:
+                        pos: self.pos
+                        size: self.size
+                        radius: [12,]
+
+<Player>:
+    name: 'player'
+    canvas.before:
+        Color:
+            rgba: 0, 0, 0, 1
+        Rectangle:
+            pos: self.pos
+            size: self.size
+
+    RelativeLayout:
+        # 1. The Video Engine
+        VideoPlayer:
+            id: video_engine
+            options: {'allow_stretch': True}
+            pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+
+        # 2. Premium Overlays (Back Button)
+        BoxLayout:
+            orientation: 'horizontal'
+            size_hint_y: None
+            height: "60dp"
+            pos_hint: {'top': 1}
+            padding: "10dp"
+            
+            # Subtle gradient or shadow effect for the top bar
+            canvas.before:
+                Color:
+                    rgba: 0, 0, 0, 0.4
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+
+            Button:
+                text: "←  BACK"
+                size_hint_x: None
+                width: "100dp"
+                background_color: 0, 0, 0, 0
+                bold: True
+                color: 1, 1, 1, 1
+                on_release: root.stop_and_go_back()
+                
+                canvas.before:
+                    Color:
+                        rgba: 1, 0, 0, 1 # Bava Red underline
+                    Line:
+                        points: self.x + 10, self.y + 15, self.x + self.width - 10, self.y + 15
+                        width: 1.2
