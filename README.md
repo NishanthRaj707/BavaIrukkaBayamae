@@ -50,7 +50,7 @@ Whether it's a robot to fetch parottas or an AI to manage your YouTube, I build 
 
 📥 Getting StartedClone the repository:
 
-git clone https://github.com/yourusername/bava-erukka-bayamae.git
+git clone https:https://github.com/NishanthRaj707/BavaIrukkaBayamae
 
 Install requirements:
 pip install -r requirements.txt
